@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SysMon</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h2>System Monitor</h2>
+            <div id="status" class="status">Connecting...</div>
+        </header>
+        <div class="grid">
+            <div class="card">
+                <h3>CPU Usage</h3>
+                <div class="value" id="cpu-val">0.0%</div>
+                <div class="bar-bg"><div class="bar-fill" id="cpu-bar"></div></div>
+            </div>
+            <div class="card">
+                <h3>RAM Usage</h3>
+                <div class="value" id="ram-val">0 / 0 MB</div>
+                <div class="bar-bg"><div class="bar-fill" id="ram-bar"></div></div>
+            </div>
+            <div class="card">
+                <h3>System Load (1m)</h3>
+                <div class="value" id="load-val">0.00</div>
+            </div>
+            <div class="card">
+                <h3>Network (RX / TX)</h3>
+                <div class="value net-value">↓ <span id="rx-val">0</span> KB/s</div>
+                <div class="value net-value">↑ <span id="tx-val">0</span> KB/s</div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
