@@ -3,34 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SysMon</title>
+    <title>SystemMonitor</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="bg-grid"></div>
+
     <div class="container">
         <header>
-            <h2>System Monitor</h2>
-            <div id="status" class="status">Connecting...</div>
+            <div class="logo-group">
+                <span class="logo-icon">⬡</span>
+                <h2>System <span class="highlight">Monitor</span></h2>
+            </div>
+            <div id="status" class="status">
+                <span class="pulse"></span> Connecting...
+            </div>
         </header>
+
         <div class="grid">
-            <div class="card">
-                <h3>CPU Usage</h3>
-                <div class="value" id="cpu-val">0.0%</div>
-                <div class="bar-bg"><div class="bar-fill" id="cpu-bar"></div></div>
+            <!-- CPU -->
+            <div class="card glass">
+                <div class="card-header">
+                    <span class="icon">🧠</span>
+                    <h3>Processor</h3>
+                </div>
+                <div class="value" id="cpu-val">0.0<span class="unit">%</span></div>
+                <div class="bar-bg"><div class="bar-fill neon" id="cpu-bar"></div></div>
             </div>
-            <div class="card">
-                <h3>RAM Usage</h3>
-                <div class="value" id="ram-val">0 / 0 MB</div>
-                <div class="bar-bg"><div class="bar-fill" id="ram-bar"></div></div>
+
+            <!-- RAM -->
+            <div class="card glass">
+                <div class="card-header">
+                    <span class="icon">💾</span>
+                    <h3>Memory</h3>
+                </div>
+                <div class="value" id="ram-perc">0.0<span class="unit">%</span></div>
+                <div class="bar-bg"><div class="bar-fill ram" id="ram-bar"></div></div>
+                <div class="sub-info" id="ram-val">0 / 0 MB</div>
             </div>
-            <div class="card">
-                <h3>System Load (1m)</h3>
-                <div class="value" id="load-val">0.00</div>
+
+            <!-- Load Average -->
+            <div class="card glass">
+                <div class="card-header">
+                    <span class="icon">⚙️</span>
+                    <h3>Load Average</h3>
+                </div>
+                <div class="load-group">
+                    <div class="load-item">
+                        <span class="value small" id="load-val">0.00</span>
+                    </div>
+                </div>
             </div>
-            <div class="card">
-                <h3>Network (RX / TX)</h3>
-                <div class="value net-value">↓ <span id="rx-val">0</span> KB/s</div>
-                <div class="value net-value">↑ <span id="tx-val">0</span> KB/s</div>
+
+            <!-- Network -->
+            <div class="card glass">
+                <div class="card-header">
+                    <span class="icon">🌐</span>
+                    <h3>Network</h3>
+                </div>
+                <div class="net-stats">
+                    <div class="net-row down">
+                        <span class="arrow">▼</span>
+                        <span class="value small" id="rx-val">0</span>
+                        <span class="unit-small">KB/s</span>
+                    </div>
+                    <div class="net-row up">
+                        <span class="arrow">▲</span>
+                        <span class="value small" id="tx-val">0</span>
+                        <span class="unit-small">KB/s</span>
+                    </div>
+                </div>
+                <div class="pulse-graph" id="net-pulse"></div>
             </div>
         </div>
     </div>

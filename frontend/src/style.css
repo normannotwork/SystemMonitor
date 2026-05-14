@@ -1,14 +1,332 @@
-:root { --bg: #121212; --card: #1e1e1e; --text: #fff; --accent: #00d2ff; --danger: #ff4b4b; }
-body { background: var(--bg); color: var(--text); font-family: sans-serif; padding: 20px; display: flex; justify-content: center; margin: 0; }
-.container { width: 100%; max-width: 800px; }
-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
-.status { padding: 4px 10px; border-radius: 12px; font-size: 14px; font-weight: bold; background: #d97706; color: white;}
-.status.ok { background: #059669; }
-.status.err { background: var(--danger); }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-.card { background: var(--card); padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-h3 { margin: 0 0 10px 0; color: #a0a0a0; font-size: 14px; text-transform: uppercase; }
-.value { font-size: 28px; font-weight: bold; margin-bottom: 15px; }
-.net-value { font-size: 20px; margin-bottom: 5px; }
-.bar-bg { width: 100%; height: 8px; background: #333; border-radius: 4px; overflow: hidden; }
-.bar-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.3s ease; }
+/* === CSS Variables (Linux Dark Theme) === */
+:root {
+    --bg: #0b0e14;
+    --card-bg: rgba(20, 25, 35, 0.75);
+    --card-border: rgba(0, 255, 255, 0.15);
+    --text: #e0e8f0;
+    --text-dim: #7a8ba0;
+    --neon-cyan: #00e5ff;
+    --neon-magenta: #ff007f;
+    --neon-green: #39ff14;
+    --accent: var(--neon-cyan);
+    --danger: #ff3366;
+    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    --glass-blur: 12px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Courier New', 'Fira Code', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.bg-grid {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    opacity: 0.15;
+    background-image:
+        linear-gradient(rgba(0, 229, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.1) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 850px;
+    position: relative;
+    z-index: 1;
+}
+
+/* === Header === */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+}
+
+.logo-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    font-size: 28px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 15px var(--neon-cyan);
+    animation: spin 10s linear infinite;
+}
+
+h2 {
+    font-size: 24px;
+    letter-spacing: 2px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.highlight {
+    color: var(--neon-cyan);
+    font-weight: 700;
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffb74d;
+    transition: all 0.3s ease;
+}
+
+.status.ok {
+    border-color: var(--neon-green);
+    color: var(--neon-green);
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+}
+
+.status.err {
+    border-color: var(--danger);
+    color: var(--danger);
+    box-shadow: 0 0 15px rgba(255, 51, 102, 0.3);
+}
+
+.pulse {
+    display: inline-block;
+    width: 10px; height: 10px;
+    background: currentColor;
+    border-radius: 50%;
+    box-shadow: 0 0 8px currentColor;
+    animation: pulse-anim 1.5s infinite;
+}
+
+/* === Grid === */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+}
+
+/* === Cards === */
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 24px 20px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    border-color: var(--neon-cyan);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px 0 rgba(0, 229, 255, 0.15);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.icon {
+    font-size: 20px;
+    filter: drop-shadow(0 0 6px var(--accent));
+}
+
+h3 {
+    color: var(--text-dim);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+}
+
+.value {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+.value.small {
+    font-size: 38px;
+    margin-bottom: 0;
+}
+
+.unit {
+    font-size: 18px;
+    color: var(--text-dim);
+    margin-left: 4px;
+}
+
+.sub-info {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 12px;
+    font-weight: 400;
+}
+
+.bar-bg {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.bar-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 10px;
+    transition: width 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    position: relative;
+}
+
+.bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4));
+    animation: shimmer 2s infinite;
+}
+
+.neon {
+    background: linear-gradient(90deg, #00c9ff, var(--neon-cyan));
+    box-shadow: 0 0 15px var(--neon-cyan);
+}
+
+.ram {
+    background: linear-gradient(90deg, #f953c6, var(--neon-magenta));
+    box-shadow: 0 0 15px var(--neon-magenta);
+}
+
+.load-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    margin-top: px;
+}
+
+.load-item {
+    text-align: center;
+    flex: 1;
+}
+
+.label {
+    display: block;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 5px;
+}
+
+.net-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.net-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.arrow {
+    font-size: 14px;
+    width: 16px;
+}
+
+.down .arrow { color: var(--neon-cyan); }
+.up .arrow { color: var(--neon-magenta); }
+
+.unit-small {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-left: 2px;
+}
+
+.pulse-graph {
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #666;
+}
+
+.dot.online {
+    background: var(--neon-green);
+    box-shadow: 0 0 10px var(--neon-green);
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-anim {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+::selection {
+    background: var(--neon-magenta);
+    color: #000;
+}
